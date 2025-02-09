@@ -1,6 +1,8 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  liquibase:
+    change-log: db/changelog/db-changelog-master.xml
   datasource:
     username: postgres
     password: postgres
@@ -8,6 +10,3 @@ spring:
     url: jdbc:postgresql://localhost:5432/chat
   jpa:
     open-in-view: false
-
-jwt:
-  secret: ${JWT_SECRET}

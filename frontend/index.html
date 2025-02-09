@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat App</title>
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="bg-white rounded-lg p-6 shadow-md">
+    <form id="createRoomForm" class="flex gap-4">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Create New Room
+      </button>
+      <div id="roomIdDisplay" class="hidden items-center gap-2">
+        <span class="font-semibold">Room ID:</span>
+        <span id="roomIdValue" class="px-3 py-1 bg-gray-100 rounded cursor-pointer"></span>
+      </div>
+    </form>
+  </div>
+
+  <div id="chatSection" class="hidden bg-white rounded-lg p-6 shadow-md space-y-4">
+    <div class="flex gap-4">
+      <label for="username"></label><input id="username" type="text" placeholder="Username"
+                                           class="flex-1 p-2 border rounded">
+      <label for="messageInput"></label><input id="messageInput" type="text" placeholder="Type your message"
+                                               class="flex-1 p-2 border rounded">
+      <button id="sendButton"
+              class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        Send
+      </button>
+    </div>
+    <div id="messages" class="space-y-2 h-96 overflow-y-auto"></div>
+  </div>
+</div>
+</body>
 </html>
