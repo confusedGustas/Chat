@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface RoomDao {
 
-    void save(Room room);
+    Room saveRoom(Room room);
     Room findById(UUID id);
 
 }

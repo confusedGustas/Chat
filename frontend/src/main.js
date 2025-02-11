@@ -4,37 +4,104 @@ import SockJS from 'sockjs-client'
 let stompClient = null
 let currentRoomId = null
 
+async function loadHistory() {
+    try {
+        const response = await fetch(`http://localhost:8080/message/${currentRoomId}`)
+        if (!response.ok) {
+            return
+        }
+        const messages = await response.json()
+        document.getElementById('messages').innerHTML = ''
+        messages.forEach(displayMessage)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function initializeRoom(roomId) {
+    currentRoomId = roomId;
+    document.getElementById('roomIdValue').textContent = roomId;
+    document.getElementById('roomIdDisplay').classList.remove('hidden');
+    document.getElementById('chatSection').classList.remove('hidden');
+    document.getElementById('username').disabled = false;
+    document.getElementById('username').classList.remove('bg-gray-100', 'cursor-not-allowed');
+
+    try {
+        await connectWebSocket();
+        await loadHistory();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 document.getElementById('createRoomForm').addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const response = await fetch('http://localhost:8080/rooms/create')
-    const room = await response.json()
-    currentRoomId = room.id
-    document.getElementById('roomIdValue').textContent = currentRoomId
-    document.getElementById('roomIdDisplay').classList.remove('hidden')
-    document.getElementById('chatSection').classList.remove('hidden')
-    connectWebSocket()
+    e.preventDefault();
+
+    document.getElementById('messages').innerHTML = '';
+    document.getElementById('roomIdDisplay').classList.add('hidden');
+    document.getElementById('chatSection').classList.add('hidden');
+
+    try {
+        const response = await fetch('http://localhost:8080/room/create');
+        if (!response.ok) {
+            return;
+        }
+        const room = await response.json();
+        await initializeRoom(room.id);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+document.getElementById('joinRoomBtn').addEventListener('click', async () => {
+    const roomId = document.getElementById('joinRoomId').value.trim()
+    if (!roomId) return
+    try {
+        const response = await fetch(`http://localhost:8080/messages/${roomId}`)
+        if (response.ok) {
+            await initializeRoom(roomId)
+        }
+    } catch (error) {
+        console.error(error)
+    }
 })
+
+document.getElementById('messageInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('sendButton').click();
+    }
+});
 
 document.getElementById('sendButton').addEventListener('click', () => {
     const messageInput = document.getElementById('messageInput')
-    const sender = document.getElementById('username').value
+    const usernameInput = document.getElementById('username')
     const content = messageInput.value.trim()
+    const sender = usernameInput.value.trim()
 
     if (content && sender && currentRoomId) {
-        const message = {
-            sender: sender,
-            content: content,
-            roomId: currentRoomId
+        if (!usernameInput.disabled) {
+            usernameInput.disabled = true
+            usernameInput.classList.add('bg-gray-100', 'cursor-not-allowed')
         }
+
         stompClient.publish({
-            destination: `/app/chat/${currentRoomId}`,
-            body: JSON.stringify(message)
+            destination: `/app/message/${currentRoomId}`,
+            body: JSON.stringify({ sender, content, roomId: currentRoomId })
         })
         messageInput.value = ''
     }
 })
 
-function connectWebSocket() {
+async function connectWebSocket() {
+    if (stompClient?.connected) {
+        try {
+            await stompClient.deactivate()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const socket = new SockJS('http://localhost:8080/ws')
     stompClient = new Client({
         webSocketFactory: () => socket,
@@ -45,8 +112,7 @@ function connectWebSocket() {
 
     stompClient.onConnect = () => {
         stompClient.subscribe(`/topic/rooms/${currentRoomId}`, (message) => {
-            const msg = JSON.parse(message.body)
-            displayMessage(msg)
+            displayMessage(JSON.parse(message.body))
         })
     }
 
@@ -56,16 +122,22 @@ function connectWebSocket() {
 function displayMessage(message) {
     const messagesDiv = document.getElementById('messages')
     const messageElement = document.createElement('div')
-    messageElement.className = 'bg-gray-50 p-3 rounded'
+    messageElement.className = 'bg-gray-700 p-4 rounded-lg space-y-1'
     messageElement.innerHTML = `
-    <div class="font-medium text-blue-600">${message.sender}</div>
-    <div class="text-gray-800">${message.content}</div>
-    <div class="text-sm text-gray-500">${new Date(message.timestamp).toLocaleTimeString()}</div>
+    <div class="flex items-center gap-2">
+      <span class="font-medium text-indigo-400">${message.sender}</span>
+      <span class="text-sm text-gray-400">${new Date(message.timestamp).toLocaleTimeString()}</span>
+    </div>
+    <div class="text-gray-100">${message.content}</div>
   `
     messagesDiv.appendChild(messageElement)
     messagesDiv.scrollTop = messagesDiv.scrollHeight
 }
 
-document.getElementById('roomIdValue').addEventListener('click', () => {
-    navigator.clipboard.writeText(currentRoomId).then(r => console.log('Copied!'))
+document.getElementById('roomIdValue').addEventListener('click', async () => {
+    try {
+        await navigator.clipboard.writeText(currentRoomId)
+    } catch (error) {
+        console.error(error)
+    }
 })

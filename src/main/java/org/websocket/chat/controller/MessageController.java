@@ -3,29 +3,28 @@ package org.websocket.chat.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.websocket.chat.entity.Message;
-import org.websocket.chat.entity.Room;
 import org.websocket.chat.service.MessageService;
-import org.websocket.chat.service.RoomService;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
 public class MessageController {
-    private final SimpMessagingTemplate messagingTemplate;
-    private final RoomService roomService;
+
     private final MessageService messageService;
 
-    @MessageMapping("/chat/{roomId}")
-    public void sendMessage(@DestinationVariable String roomId, Message message) {
-        Room room = roomService.getRoom(UUID.fromString(roomId));
-        if (room != null) {
-            message.setRoomId(UUID.fromString(roomId));
-            Message saved = messageService.saveMessage(message);
-            messagingTemplate.convertAndSend("/topic/rooms/" + roomId, saved);
-        }
+    @MessageMapping("/message/{roomId}")
+    public void sendMessage(@DestinationVariable UUID roomId, Message message) {
+        messageService.sendMessage(roomId, message);
+    }
+
+    @GetMapping("/messages/{roomId}")
+    public List<Message> getMessages(@PathVariable UUID roomId) {
+        return messageService.getMessages(roomId);
     }
 
 }
