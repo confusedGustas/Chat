@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface MessageService {
 
-    void sendMessage(UUID roomId, Message message);
+    Message sendMessage(UUID roomId, Message message);
     List<Message> getMessages(UUID roomId);
 
 }

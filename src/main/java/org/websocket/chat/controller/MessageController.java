@@ -1,6 +1,7 @@
 package org.websocket.chat.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -17,14 +18,14 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @MessageMapping("/message/{roomId}")
-    public void sendMessage(@DestinationVariable UUID roomId, Message message) {
-        messageService.sendMessage(roomId, message);
+    @MessageMapping("/message/send/{roomId}")
+    public ResponseEntity<Message> sendMessage(@DestinationVariable UUID roomId, Message message) {
+        return ResponseEntity.ok(messageService.sendMessage(roomId, message));
     }
 
-    @GetMapping("/messages/{roomId}")
-    public List<Message> getMessages(@PathVariable UUID roomId) {
-        return messageService.getMessages(roomId);
+    @GetMapping("/message/get/all/{roomId}")
+    public ResponseEntity<List<Message>> getMessages(@PathVariable UUID roomId) {
+        return ResponseEntity.ok(messageService.getMessages(roomId));
     }
 
 }

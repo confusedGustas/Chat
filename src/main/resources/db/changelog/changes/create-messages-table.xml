@@ -8,15 +8,29 @@
     <changeSet id="1" author="Gustas">
         <createTable tableName="messages">
             <column name="id" type="UUID">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="content" type="TEXT" />
+            <column name="content" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
             <column name="room_id" type="UUID">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="sender" type="VARCHAR(255)" />
-            <column name="timestamp" type="TIMESTAMP" />
         </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="messages"
+                baseColumnNames="room_id"
+                referencedTableName="rooms"
+                referencedColumnNames="id"
+                constraintName="fk_messages_room"
+                onDelete="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

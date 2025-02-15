@@ -10,3 +10,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/chat
   jpa:
     open-in-view: false
+  security:
+    user:
+      name: admin
+      password: admin

@@ -6,6 +6,6 @@ import java.util.UUID;
 public interface RoomDao {
 
     Room saveRoom(Room room);
-    Room findById(UUID id);
+    Room findRoomById(UUID id);
 
 }

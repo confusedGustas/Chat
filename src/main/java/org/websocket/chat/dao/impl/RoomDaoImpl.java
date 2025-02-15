@@ -19,7 +19,7 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     @Override
-    public Room findById(UUID id) {
+    public Room findRoomById(UUID id) {
         return roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
     }
 

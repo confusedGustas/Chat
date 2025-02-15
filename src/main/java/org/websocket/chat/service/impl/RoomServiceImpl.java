@@ -14,7 +14,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room createRoom() {
-        return roomDao.saveRoom(new Room());
+        return roomDao.saveRoom(Room.builder().build());
     }
-
 }

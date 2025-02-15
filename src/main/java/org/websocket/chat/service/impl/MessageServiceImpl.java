@@ -1,5 +1,6 @@
 package org.websocket.chat.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,6 @@ import org.websocket.chat.dao.RoomDao;
 import org.websocket.chat.entity.Message;
 import org.websocket.chat.entity.Room;
 import org.websocket.chat.service.MessageService;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,16 +21,19 @@ public class MessageServiceImpl implements MessageService {
     private final RoomDao roomDao;
 
     @Override
-    public void sendMessage(UUID roomId, Message message) {
-        Room room = roomDao.findById(roomId);
+    @Transactional
+    public Message sendMessage(UUID roomId, Message message) {
+        Room room = roomDao.findRoomById(roomId);
 
         if (room != null) {
-            message.setRoomId(UUID.fromString(String.valueOf(roomId)));
-            message.setTimestamp(new Date());
+            message.setRoom(room);
+            room.getMessages().add(message);
 
             Message saved = messageDao.saveMessage(message);
             messagingTemplate.convertAndSend("/topic/rooms/" + roomId, saved);
         }
+
+        return message;
     }
 
     @Override
