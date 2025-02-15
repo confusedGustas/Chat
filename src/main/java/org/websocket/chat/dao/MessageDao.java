@@ -8,5 +8,6 @@ public interface MessageDao {
 
     List<Message> getMessageByRoomId(UUID roomId);
     Message saveMessage(Message message);
+    List<String> getDistinctSendersByRoomId(UUID roomId);
 
 }
