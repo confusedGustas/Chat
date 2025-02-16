@@ -19,8 +19,8 @@ public class MessageController {
     private final MessageService messageService;
 
     @MessageMapping("/message/send/{roomId}")
-    public ResponseEntity<Message> sendMessage(@DestinationVariable UUID roomId, Message message) {
-        return ResponseEntity.ok(messageService.sendMessage(roomId, message));
+    public void sendMessage(@DestinationVariable UUID roomId, Message message) {
+        messageService.sendMessage(roomId, message);
     }
 
     @GetMapping("/message/get/all/{roomId}")

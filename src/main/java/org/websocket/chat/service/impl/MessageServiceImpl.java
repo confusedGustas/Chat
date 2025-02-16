@@ -10,7 +10,6 @@ import org.websocket.chat.entity.Message;
 import org.websocket.chat.entity.Room;
 import org.websocket.chat.integrity.MessageIntegrity;
 import org.websocket.chat.service.MessageService;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -27,16 +26,13 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public Message sendMessage(UUID roomId, Message message) {
+    public void sendMessage(UUID roomId, Message message) {
         Room room = roomDao.findRoomById(roomId);
         messageIntegrity.validateMessage(message);
         messageIntegrity.validateNickname(messageDao.getDistinctSendersByRoomId(roomId), message.getSender());
 
         assignRoomToMessage(room, message);
-        Message savedMessage = persistMessage(message);
-        notifySubscribers(roomId, savedMessage);
-
-        return savedMessage;
+        notifySubscribers(roomId, persistMessage(message));
     }
 
     @Override

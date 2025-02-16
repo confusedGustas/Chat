@@ -1,4 +1,4 @@
-package org.websocket.chat.exception;
+package org.websocket.chat.exception.exceptions;
 
 public class InvalidRoomIdException extends RuntimeException {
 

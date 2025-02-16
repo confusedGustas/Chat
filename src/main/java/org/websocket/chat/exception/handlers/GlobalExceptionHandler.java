@@ -1,4 +1,4 @@
-package org.websocket.chat.exception;
+package org.websocket.chat.exception.handlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,6 +8,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.websocket.chat.exception.exceptions.ChatApplicationException;
+import org.websocket.chat.exception.exceptions.InvalidNicknameException;
+import org.websocket.chat.exception.exceptions.InvalidRoomIdException;
+import org.websocket.chat.exception.exceptions.MessageValidationException;
+import org.websocket.chat.exception.exceptions.RoomNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 

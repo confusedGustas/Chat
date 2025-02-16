@@ -2,8 +2,8 @@ package org.websocket.chat.integrity.impl;
 
 import org.springframework.stereotype.Service;
 import org.websocket.chat.entity.Message;
-import org.websocket.chat.exception.InvalidNicknameException;
-import org.websocket.chat.exception.MessageValidationException;
+import org.websocket.chat.exception.exceptions.InvalidNicknameException;
+import org.websocket.chat.exception.exceptions.MessageValidationException;
 import org.websocket.chat.integrity.MessageIntegrity;
 import java.util.List;
 

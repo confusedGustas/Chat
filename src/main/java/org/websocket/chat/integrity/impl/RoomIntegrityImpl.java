@@ -2,8 +2,8 @@ package org.websocket.chat.integrity.impl;
 
 import org.springframework.stereotype.Service;
 import org.websocket.chat.entity.Room;
-import org.websocket.chat.exception.InvalidRoomIdException;
-import org.websocket.chat.exception.RoomNotFoundException;
+import org.websocket.chat.exception.exceptions.InvalidRoomIdException;
+import org.websocket.chat.exception.exceptions.RoomNotFoundException;
 import org.websocket.chat.integrity.RoomIntegrity;
 import java.util.UUID;
 
