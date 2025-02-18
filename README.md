@@ -2,8 +2,6 @@
 
 A real-time chat application using WebSockets for instant messaging and Spring Boot for the backend.
 
----
-
 ## 🔗 Services & Access Information
 
 | 🛠 Service        | 🌍 URL / Port                                  | 👤 Username       | 🔑 Password  |
@@ -12,8 +10,6 @@ A real-time chat application using WebSockets for instant messaging and Spring B
 | **PostgreSQL**    | `localhost:5432`                               | `admin`           | `admin`      |
 | **pgAdmin**       | [http://localhost:8282](http://localhost:8282) | `admin@gmail.com` | `admin`      |
 | **Frontend**      | [http://localhost:5173](http://localhost:5173) | -                 | -            |
-
----
 
 ## 📝 Environment Variables
 
@@ -44,7 +40,7 @@ PGADMIN_PASSWORD: admin
 
 ## Running the Services
 
-### 🚢 Start All Services
+### 🚢 Start Service
 
 ```sh
 docker compose up
@@ -55,26 +51,3 @@ docker compose up
 ```sh
 ./mvnw spring-boot:run
 ```
-
-### 🛠 Optional
-
-### 1️⃣ Open pgAdmin
-
-- Navigate to [http://localhost:8282](http://localhost:8282)
-- Log in with:
-    - **Username**: `admin@gmail.com`
-    - **Password**: `admin`
-
-### 2️⃣ Register a New Server
-
-- Right-click **Servers** in the Browser panel → **Register** → **Server...**
-
-### 3️⃣ Configure the First Server
-
-- **General Tab**:
-    - Name: `chat`
-- **Connection Tab**:
-    - Host: `host.docker.internal`
-    - Port: `5432`
-    - Username: `postgres`
-    - Password: `postgres`
