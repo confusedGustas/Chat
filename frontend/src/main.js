@@ -1,12 +1,10 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-
 let stompClient = null;
 let currentRoomId = null;
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 5;
 const RECONNECT_DELAY = 5000;
-
 async function loadHistory() {
     try {
         const response = await fetch(`http://localhost:8080/message/get/all/${currentRoomId}`);
@@ -22,7 +20,6 @@ async function loadHistory() {
         showError('Failed to load chat history');
     }
 }
-
 async function initializeRoom(roomId) {
     currentRoomId = roomId;
     document.getElementById('joinRoomId').value = roomId;
@@ -36,7 +33,6 @@ async function initializeRoom(roomId) {
         showError('Failed to initialize room');
     }
 }
-
 document.getElementById('createRoomForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     document.getElementById('messages').innerHTML = '';
@@ -54,7 +50,6 @@ document.getElementById('createRoomForm').addEventListener('submit', async (e) =
         showError('Failed to create room');
     }
 });
-
 document.getElementById('joinRoomBtn').addEventListener('click', async () => {
     const roomId = document.getElementById('joinRoomId').value.trim();
     if (!roomId) return;
@@ -74,14 +69,12 @@ document.getElementById('joinRoomBtn').addEventListener('click', async () => {
         showError('Failed to join room');
     }
 });
-
 document.getElementById('messageInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         document.getElementById('sendButton').click();
     }
 });
-
 document.getElementById('sendButton').addEventListener('click', () => {
     const messageInput = document.getElementById('messageInput');
     const usernameInput = document.getElementById('username');
@@ -99,7 +92,6 @@ document.getElementById('sendButton').addEventListener('click', () => {
         messageInput.value = '';
     }
 });
-
 async function connectWebSocket() {
     if (stompClient?.connected) await stompClient.deactivate();
     const socket = new SockJS('http://localhost:8080/ws');
@@ -135,7 +127,6 @@ async function connectWebSocket() {
     };
     stompClient.activate();
 }
-
 function attemptReconnect() {
     if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
         reconnectAttempts++;
@@ -144,7 +135,6 @@ function attemptReconnect() {
         showError('Unable to reconnect to the chat server. Please refresh the page.');
     }
 }
-
 function showError(message) {
     const chatSection = document.getElementById('chatSection');
     const existingErrors = chatSection.getElementsByClassName('error-banner');
@@ -157,7 +147,6 @@ function showError(message) {
     chatSection.prepend(banner);
     setTimeout(() => banner.remove(), 5000);
 }
-
 function displayMessage(message) {
     const messagesDiv = document.getElementById('messages');
     const messageElement = document.createElement('div');
