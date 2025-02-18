@@ -7,10 +7,7 @@
   <script>window.global = window;</script>
   <script type="module" src="./src/main.js"></script>
   <link href="./styles.css" rel="stylesheet">
-  <style>
-    @keyframes shake {0%, 100% {transform: translateX(0);}25% {transform: translateX(-5px);}75% {transform: translateX(5px);}}
-    @keyframes fade-in {from {opacity: 0; transform: translateY(-10px);}to {opacity: 1; transform: translateY(0);}}
-  </style>
+  <link href="./animations.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 min-h-screen p-8">
 <div class="max-w-4xl mx-auto space-y-6">
@@ -27,7 +24,8 @@
         Create New Room
       </button>
       <div class="flex flex-1 items-center gap-4 bg-gray-700 rounded-lg p-2">
-        <label for="joinRoomId"></label><input id="joinRoomId" type="text" placeholder="Enter Room ID" class="flex-1 bg-transparent py-2 text-gray-100 placeholder-gray-400 focus:outline-none">
+        <label for="joinRoomId"></label>
+        <input id="joinRoomId" type="text" placeholder="Enter Room ID" class="flex-1 bg-transparent py-2 text-gray-100 placeholder-gray-400 focus:outline-none">
         <button type="button" id="joinRoomBtn" class="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -39,13 +37,15 @@
   </div>
   <div id="chatSection" class="hidden bg-gray-800 rounded-xl p-6 shadow-xl space-y-6 border border-gray-700">
     <div id="messages" class="space-y-4 h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scrollbar-thumb-rounded-full"></div>
-    <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex flex-col md:flex-row">
       <div class="flex-1 space-y-2">
-        <label for="username"></label><input id="username" type="text" placeholder="Your username" class="w-full bg-gray-700 text-gray-100 px-4 py-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 mb-0">
+        <label for="username"></label>
+        <input id="username" type="text" placeholder="Your username" class="w-full bg-gray-700 text-gray-100 px-4 py-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 mb-0">
         <div id="usernameError" class="text-red-400 text-sm hidden"></div>
       </div>
       <div class="flex flex-1 items-center gap-4">
-        <label for="messageInput"></label><input id="messageInput" type="text" placeholder="Type your message..." class="flex-1 bg-gray-700 text-gray-100 px-4 py-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400">
+        <label for="messageInput"></label>
+        <input id="messageInput" type="text" placeholder="Type your message..." class="flex-1 bg-gray-700 text-gray-100 px-4 py-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400">
         <button id="sendButton" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
